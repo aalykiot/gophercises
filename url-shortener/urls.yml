@@ -1,0 +1,8 @@
+- path: "/google"
+  url: "https://www.google.com"
+- path: "/youtube"
+  url: "https://www.youtube.com"
+- path: "/github"
+  url: "https://www.github.com"
+- path: "/golang"
+  url: "https://www.golang.org"

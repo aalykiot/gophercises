@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title>Go Stories</title>
+		<style>
+			body {
+				padding-top: 20px;
+				font-family: 'Courier New', Courier, monospace;
+				text-align: center;
+				background-color: #fff1c5;
+			}
+			li {
+				margin-bottom: 20px;
+			}
+			.story {
+				margin: 50px auto;
+				max-width: 700px;
+			}
+			.options {
+				margin: 0 auto;
+				max-width: 800px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>{{ .Title }}</h1>
+		<div class="story">
+			{{ range.Story }}
+				<p>{{.}}</p>
+			{{ end }}
+		</div>
+		<div class="options">
+			<ul>
+				{{ range.Options }}
+					<li>
+						<a href="{{ .Arc }}">{{ .Text }}</a>
+					</li>
+				{{ end }}
+			</ul>
+		</div>
+	</body>
+</html>
