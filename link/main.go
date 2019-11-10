@@ -47,6 +47,7 @@ func parseHTML(n *html.Node, links *[]Link) {
 
 func main() {
 	file, err := os.Open("test.html")
+	checkError(err)
 
 	doc, err := html.Parse(file)
 	checkError(err)
