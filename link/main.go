@@ -20,8 +20,8 @@ func parseLink(n *html.Node) string {
 		return ""
 	}
 
-	// When on a leaf node return the text
-	if n.FirstChild == nil {
+	// When on a text node return the text
+	if n.Type == html.TextNode {
 		return strings.TrimSpace(n.Data)
 	}
 
