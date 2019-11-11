@@ -3,22 +3,31 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"golang.org/x/net/html"
 )
 
-type Link struct {
+type link struct {
 	Href string
 	Text string
 }
 
+// Parsing link's subtree to get the text
 func parseLink(n *html.Node) string {
+	// If the node is a comment return empty string
+	if n.Type == html.CommentNode {
+		return ""
+	}
+
+	// When on a leaf node return the text
 	if n.FirstChild == nil {
-		return n.Data
+		return strings.TrimSpace(n.Data)
 	}
 
 	var text string
 
+	// Concatenating the text of the link
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		text += parseLink(c)
 	}
@@ -26,20 +35,27 @@ func parseLink(n *html.Node) string {
 	return text
 }
 
-func parseHTML(n *html.Node, links *[]Link) {
+// Parsing all the html tree using dfs
+func parseHTML(n *html.Node, links *[]link) {
+	// If we found a link element explore that subtree
 	if n.Type == html.ElementNode && n.Data == "a" {
-		var link Link
+		var lnk link
+
+		// Getting the href attribute
 		for _, attr := range n.Attr {
 			if attr.Key == "href" {
-				link.Href = attr.Val
+				lnk.Href = attr.Val
 			}
 		}
-		link.Text = parseLink(n)
 
-		*links = append(*links, link)
+		// Getting the text of the link
+		lnk.Text = parseLink(n)
+
+		*links = append(*links, lnk)
 		return
 	}
 
+	// Continuing the dfs on the tree
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		parseHTML(c, links)
 	}
@@ -52,7 +68,7 @@ func main() {
 	doc, err := html.Parse(file)
 	checkError(err)
 
-	var links []Link
+	var links []link
 	parseHTML(doc, &links)
 
 	fmt.Println(links)
