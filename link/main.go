@@ -8,9 +8,9 @@ import (
 	"golang.org/x/net/html"
 )
 
-type link struct {
-	Href string
-	Text string
+type Link struct {
+	href string
+	text string
 }
 
 // Parsing link's subtree to get the text
@@ -36,22 +36,22 @@ func parseLink(n *html.Node) string {
 }
 
 // Parsing all the html tree using dfs
-func parseHTML(n *html.Node, links *[]link) {
+func parseHTML(n *html.Node, links *[]Link) {
 	// If we found a link element explore that subtree
 	if n.Type == html.ElementNode && n.Data == "a" {
-		var lnk link
+		var link Link
 
 		// Getting the href attribute
 		for _, attr := range n.Attr {
 			if attr.Key == "href" {
-				lnk.Href = attr.Val
+				link.href = attr.Val
 			}
 		}
 
 		// Getting the text of the link
-		lnk.Text = parseLink(n)
+		link.text = parseLink(n)
 
-		*links = append(*links, lnk)
+		*links = append(*links, link)
 		return
 	}
 
@@ -68,7 +68,7 @@ func main() {
 	doc, err := html.Parse(file)
 	checkError(err)
 
-	var links []link
+	var links []Link
 	parseHTML(doc, &links)
 
 	fmt.Println(links)
