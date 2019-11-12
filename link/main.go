@@ -10,8 +10,8 @@ import (
 
 // Link describes the format of an anchor tag
 type Link struct {
-	href string
-	text string
+	Href string
+	Text string
 }
 
 // Parsing link's subtree to get the text
@@ -37,7 +37,7 @@ func parseLink(n *html.Node) string {
 }
 
 // ParseHTML will parse all the html links to an array using dfs
-func ParseHTML(n *html.Node, links *[]Link) {
+func ParseHTML(n *html.Node) []Link {
 	// If we found a link element explore that subtree
 	if n.Type == html.ElementNode && n.Data == "a" {
 		var link Link
@@ -45,21 +45,24 @@ func ParseHTML(n *html.Node, links *[]Link) {
 		// Getting the href attribute
 		for _, attr := range n.Attr {
 			if attr.Key == "href" {
-				link.href = attr.Val
+				link.Href = attr.Val
 			}
 		}
 
 		// Getting the text of the link
-		link.text = parseLink(n)
+		link.Text = parseLink(n)
 
-		*links = append(*links, link)
-		return
+		return []Link{link}
 	}
+
+	var result []Link
 
 	// Continuing the dfs on the tree
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		ParseHTML(c, links)
+		result = append(result, ParseHTML(c)...)
 	}
+
+	return result
 }
 
 func main() {
@@ -69,8 +72,7 @@ func main() {
 	doc, err := html.Parse(file)
 	checkError(err)
 
-	var links []Link
-	ParseHTML(doc, &links)
+	links := ParseHTML(doc)
 
 	fmt.Println(links)
 }

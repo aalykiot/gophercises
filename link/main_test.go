@@ -31,14 +31,13 @@ func TestParseHtml(t *testing.T) {
 			</a>
 		`
 
-		var got []Link
 		doc, _ := html.Parse(strings.NewReader(str))
-		ParseHTML(doc, &got)
+		got := ParseHTML(doc)
 
 		want := []Link{
 			Link{
-				href: "/dog",
-				text: "Something in a span Text not in a span Bold text!",
+				Href: "/dog",
+				Text: "Something in a span Text not in a span Bold text!",
 			},
 		}
 
@@ -66,18 +65,17 @@ func TestParseHtml(t *testing.T) {
 			</html>
 		`
 
-		var got []Link
 		doc, _ := html.Parse(strings.NewReader(str))
-		ParseHTML(doc, &got)
+		got := ParseHTML(doc)
 
 		want := []Link{
 			Link{
-				href: "https://www.twitter.com/joncalhoun",
-				text: "Check me out on twitter",
+				Href: "https://www.twitter.com/joncalhoun",
+				Text: "Check me out on twitter",
 			},
 			Link{
-				href: "https://github.com/gophercises",
-				text: "Gophercises is on Github!",
+				Href: "https://github.com/gophercises",
+				Text: "Gophercises is on Github!",
 			},
 		}
 
@@ -93,14 +91,13 @@ func TestParseHtml(t *testing.T) {
 			</html>
 		`
 
-		var got []Link
 		doc, _ := html.Parse(strings.NewReader(str))
-		ParseHTML(doc, &got)
+		got := ParseHTML(doc)
 
 		want := []Link{
 			Link{
-				href: "/dog-cat",
-				text: "dog cat",
+				Href: "/dog-cat",
+				Text: "dog cat",
 			},
 		}
 
