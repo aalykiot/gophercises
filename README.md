@@ -7,7 +7,7 @@ In this repo I am committing my solutions of the awesome exercises from the goph
 - [x] Quiz Game
 - [x] URL Shortener
 - [x] Choose Your Own Adventure
-- [ ] HTML Link Parser
+- [x] HTML Link Parser
 - [ ] Sitemap Builder
 - [ ] Hacker Rank Problem
 - [ ] CLI Task Manager
