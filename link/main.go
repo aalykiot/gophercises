@@ -23,7 +23,7 @@ func parseLink(n *html.Node) string {
 
 	// When on a text node return the text
 	if n.Type == html.TextNode {
-		return strings.Trim(n.Data, "\n")
+		return n.Data
 	}
 
 	var text string
