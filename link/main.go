@@ -8,6 +8,7 @@ import (
 	"golang.org/x/net/html"
 )
 
+// Link describes the format of an anchor tag
 type Link struct {
 	href string
 	text string
@@ -22,7 +23,7 @@ func parseLink(n *html.Node) string {
 
 	// When on a text node return the text
 	if n.Type == html.TextNode {
-		return strings.TrimSpace(n.Data)
+		return strings.Trim(n.Data, "\n")
 	}
 
 	var text string
@@ -32,11 +33,11 @@ func parseLink(n *html.Node) string {
 		text += parseLink(c)
 	}
 
-	return text
+	return strings.Join(strings.Fields(text), " ")
 }
 
-// Parsing all the html tree using dfs
-func parseHTML(n *html.Node, links *[]Link) {
+// ParseHTML will parse all the html links to an array using dfs
+func ParseHTML(n *html.Node, links *[]Link) {
 	// If we found a link element explore that subtree
 	if n.Type == html.ElementNode && n.Data == "a" {
 		var link Link
@@ -57,7 +58,7 @@ func parseHTML(n *html.Node, links *[]Link) {
 
 	// Continuing the dfs on the tree
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		parseHTML(c, links)
+		ParseHTML(c, links)
 	}
 }
 
@@ -69,7 +70,7 @@ func main() {
 	checkError(err)
 
 	var links []Link
-	parseHTML(doc, &links)
+	ParseHTML(doc, &links)
 
 	fmt.Println(links)
 }
